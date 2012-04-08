@@ -24,3 +24,5 @@ config/initializers/airbrake.rb
 config/unicorn.rb
 .rvmrc
 *.swp
+/flog.report
+/lib/abc.rb
