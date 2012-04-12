@@ -1,6 +1,11 @@
-class UserSkill < ActiveRecord::Base
+class UserSkill
+  include Mongoid::Document
 
-  belongs_to :user
+  field :title, :type => String
 
-  validates_presence_of :title, :user_id
+  embedded_in :user, :inverse_of => :user_skills
+
+  validates_presence_of :title
+  validates_length_of :title, :minimum => 3, :maximum => 256
+
 end

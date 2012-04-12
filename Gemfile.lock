@@ -118,6 +118,8 @@ GEM
       activemodel (~> 3.1)
       mongo (~> 1.3)
       tzinfo (~> 0.3.22)
+    mongoid-paperclip (0.0.7)
+      paperclip (>= 2.3.6)
     multi_json (1.2.0)
     multipart-post (1.1.5)
     mynyml-redgreen (0.7.1)
@@ -143,9 +145,10 @@ GEM
       oauth2 (~> 0.5.0)
       omniauth (~> 1.0)
     orm_adapter (0.0.7)
-    paperclip (2.7.0)
-      activerecord (>= 2.3.0)
-      activesupport (>= 2.3.2)
+    paperclip (3.0.1)
+      activemodel (>= 3.0.0)
+      activerecord (>= 3.0.0)
+      activesupport (>= 3.0.0)
       cocaine (>= 0.0.2)
       mime-types
     polyglot (0.3.3)
@@ -207,7 +210,7 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.32)
+    tzinfo (0.3.33)
     uglifier (1.2.4)
       execjs (>= 0.3.0)
       multi_json (>= 1.0.2)
@@ -240,10 +243,10 @@ DEPENDENCIES
   launchy
   mocha
   mongoid (~> 2.4)
+  mongoid-paperclip
   mynyml-redgreen
   mysql2
   omniauth-facebook
-  paperclip (~> 2.5)
   rails (= 3.2.1)
   sass-rails (~> 3.2.3)
   shoulda

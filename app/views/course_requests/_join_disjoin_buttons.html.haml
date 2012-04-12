@@ -1,4 +1,5 @@
-- if current_user.course_requests.include?(@course_request)
+= current_user.course_request_ids.inspect
+- if current_user.course_request_ids.include?(@course_request.id) #CourseRequest.exists?(:conditions => {:id => @course_request.id , :user_ids.in => [current_user.id] })
   = form_tag({:controller => "course_requests", :action => :disjoin}, :method => :post) do
     = hidden_field_tag 'course_request_id', @course_request.id
     = submit_tag I18n.t('course_request.show.disjoin_course_request_button')

@@ -3,17 +3,19 @@ require 'test_helper'
 class UserSkillTest < ActiveSupport::TestCase
 
   should 'create user_skills for user' do
-    assert_difference "UserSkill.count" do
-      Factory.create(:user_skill)
-    end
+    user = Factory.create(:user)
+    user.user_skills.create(title: "WTF")
+    user.user_skills.create(title: "WTF")
+    assert_equal user.user_skills.size, 2
   end
 
   should 'validate user_skills correct' do
-    assert_raise ActiveRecord::RecordInvalid do
-      Factory.create(:user_skill, :user => nil)
-    end
-    assert_raise ActiveRecord::RecordInvalid do
-      Factory.create(:user_skill, :title => nil)
+    user = Factory.create(:user)
+    user.user_skills.build(title: "" )
+    assert_equal user.user_skills.first.valid?, false
+
+    assert_raise Mongoid::Errors::Validations do
+      user.save!
     end
   end
 

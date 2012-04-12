@@ -25,8 +25,8 @@ class CourseRequestsController < ApplicationController
   end
 
   def join
-    if course_request = CourseRequest.find_by_id(params[:course_request_id])
-      if current_user.join_course_request course_request
+    if course_request = CourseRequest.find(params[:course_request_id])
+      if current_user.join_course_request course_request.id
         flash[:info] = I18n.t('course_request.join.success')
       else
         flash[:error] = I18n.t('course_request.join.fail')
@@ -34,12 +34,12 @@ class CourseRequestsController < ApplicationController
     else
       flash[:error] = I18n.t('course_request.join.fail')
     end
-    redirect_to CourseRequest.find_by_id(course_request) ? course_request_path(course_request) : course_requests_path
+    redirect_to CourseRequest.find(course_request.id) ? course_request_path(course_request.id) : course_requests_path
   end
 
   def disjoin
-    if course_request = CourseRequest.find_by_id(params[:course_request_id])
-      if current_user.disjoin_course_request course_request
+    if course_request = CourseRequest.find(params[:course_request_id])
+      if current_user.disjoin_course_request course_request.id
         flash[:info] = I18n.t('course_request.disjoin.success')
       else
         flash[:error] = I18n.t('course_request.disjoin.fail')
@@ -47,7 +47,7 @@ class CourseRequestsController < ApplicationController
     else
       flash[:error] = I18n.t('course_request.disjoin.fail')
     end
-    redirect_to CourseRequest.find_by_id(course_request) ? course_request_path(course_request) : course_requests_path
+    redirect_to CourseRequest.find(course_request.id) ? course_request_path(course_request.id) : course_requests_path
   end
 
 end

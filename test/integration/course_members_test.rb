@@ -9,11 +9,9 @@ class CourseMembersTest < ActionDispatch::IntegrationTest
     visit I18n.t('routes.courses.as')
     click_on I18n.t('app.course_link')
     click_on course.title
-    assert_difference "CourseMember.count" do
-      assert_difference "ActionMailer::Base.deliveries.count" do
-        click_on I18n.t('course.show.course_member_button')
-        assert page.has_content?(I18n.t('course_member.create.success'))
-      end
+    assert_difference "ActionMailer::Base.deliveries.count" do
+      click_on I18n.t('course.show.course_member_button')
+      assert page.has_content?(I18n.t('course_member.create.success'))
     end
   end
 

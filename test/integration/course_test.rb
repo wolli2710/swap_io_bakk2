@@ -69,7 +69,10 @@ class CourseTest < ActionDispatch::IntegrationTest
     course_request = Factory.create(:course_request)
     user.join_course_request(course_request)
     login_as user2
-    visit course_request_path(course_request.id)
+save_and_open_page
+    visit course_requests_path
+    click_on course_request.title
+puts I18n.t('course_request.show.provide_course_request_button')
     click_on I18n.t('course_request.show.provide_course_request_button')
   end
 

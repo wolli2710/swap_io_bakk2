@@ -1,6 +1,7 @@
 
 FactoryGirl.define do
   require 'hash'
+  require 'mongoid'
 
   factory :course do |f|
     f.association :user
@@ -34,7 +35,6 @@ FactoryGirl.define do
 
   factory :user_skill do |f|
     sequence(:title){|n| "Skill #{n}" }
-    f.association :user
   end
 
   factory :newsletter do |f|
