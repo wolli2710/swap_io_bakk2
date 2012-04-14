@@ -39,24 +39,11 @@ class User
    field :confirmation_sent_at, :type => Time
    field :unconfirmed_email,    :type => String # Only if using reconfirmable
 
-  ## Lockable
-  # field :failed_attempts, :type => Integer, :default => 0 # Only if lock strategy is :failed_attempts
-  # field :unlock_token,    :type => String # Only if unlock strategy is :email or :both
-  # field :locked_at,       :type => Time
-
-  ## Token authenticatable
-  # field :authentication_token, :type => String
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
-
-  #devise :database_authenticatable, :registerable, :confirmable,
-   #      :recoverable, :rememberable, :trackable, :omniauthable
-
   has_many :courses, :dependent => :destroy
   has_many :course_requests, :dependent => :destroy
  # has_many :course_members #, :through => :courses
 
-  has_many :course_requests #, :uniq => true
+  has_and_belongs_to_many :course_requests #, :uniq => true
 
   embeds_many :user_skills
   #accepts_nested_attributes_for :user_skills
@@ -100,20 +87,21 @@ class User
       false
     else
       self.course_request_ids << course_request_id
-      self.course_requests.find(course_request_id).user_ids << self.id
       self.save
+      cr = CourseRequest.find(course_request_id)
+      cr.user_ids << self.id
+      cr.save
       true
     end
   end
 
   def disjoin_course_request(course_request_id)
     cr = CourseRequest.find(course_request_id)
-    if cr.user_ids.size > 1
+    if cr.user_ids.size > 0
       cr.user_ids.delete(self.id)
       cr.save
       true
     else
-      cr.destroy
       false
     end
   end
@@ -137,35 +125,3 @@ class User
   end
 
 end
-
-
-  # field :first_name, :type => String
-  # field :last_name, :type => String
-  # field :zip, :type => Integer
-  # field :job, :type => String
-  # field :motivation, :type => String
-  # field :description, :type => String
-
-  #   ## Database authenticatable
-  # field :email, :type => String, :null => false, :default => ""
-  # field :encrypted_password, :type => String, :null => false, :default => ""
-
-  # ## Recoverable
-  # field :reset_password_token, :type => String
-  # field :reset_password_sent_at, :type => Time
-
-  # ## Rememberable
-  # field :remember_created_at, :type => Time
-
-  # ## Trackable
-  # field :sign_in_count, :type => Integer, :default => 0
-  # field :current_sign_in_at, :type => Time
-  # field :confirmed_at, :type => Time
-  # field :confirmation_token, :type => String
-  # field :unconfirmed_email, :type => String
-  # field :confirmation_sent_at, :type => Time
-  # field :last_sign_in_at, :type => Time
-  # field :current_sign_in_ip, :type => String
-  # field :last_sign_in_ip, :type => String
-
-

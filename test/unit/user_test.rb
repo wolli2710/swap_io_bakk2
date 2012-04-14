@@ -69,14 +69,15 @@ class UserTest < ActiveSupport::TestCase
       should "find existing course_request" do
         user =  Factory.create(:user)
         course_request = user.course_requests.create(:title => "test", :description => "bli")
-        assert_equal true, user.has_course_request?(course_request)
+        user.reload
+        assert_equal true, user.has_course_request?(course_request.id)
       end
 
       should "not find course_requests of other users" do
         user =  Factory.create(:user)
         user2 =  Factory.create(:user)
         course_request = user.course_requests.create(:title => "test", :description => "bli")
-        assert_equal false, user2.has_course_request?(course_request)
+        assert_equal false, user2.has_course_request?(course_request.id)
       end
     end
 
@@ -84,8 +85,8 @@ class UserTest < ActiveSupport::TestCase
       should "join_course_request if not already joined" do
         user =  Factory.create(:user)
         course_request = Factory(:course_request)
-        assert false != user.join_course_request(course_request)
-        assert_equal false, user.join_course_request(course_request)
+        assert false != user.join_course_request(course_request.id)
+        assert_equal false, user.join_course_request(course_request.id)
       end
     end
 
@@ -94,21 +95,21 @@ class UserTest < ActiveSupport::TestCase
         user1 = Factory.create(:user)
         user2 = Factory.create(:user)
         course_request = Factory(:course_request)
-        user1.join_course_request(course_request)
-        user2.join_course_request(course_request)
+        user1.join_course_request(course_request.id)
+        user2.join_course_request(course_request.id)
         assert CourseRequest.exists?(conditions: {id: course_request.id })
-        user1.disjoin_course_request(course_request)
-        user2.disjoin_course_request(course_request)
-        assert !CourseRequest.exists?(conditions: {id: course_request.id })
+        user1.disjoin_course_request(course_request.id)
+        user2.disjoin_course_request(course_request.id)
+        assert CourseRequest.exists?(conditions: {id: course_request.id })
       end
 
       should 'not delete course request for last user' do
         user1 = Factory.create(:user)
         user2 = Factory.create(:user)
         course_request = Factory(:course_request)
-        user1.join_course_request(course_request)
-        user2.join_course_request(course_request)
-        user1.disjoin_course_request(course_request)
+        user1.join_course_request(course_request.id)
+        user2.join_course_request(course_request.id)
+        user1.disjoin_course_request(course_request.id)
         assert_not_nil CourseRequest.find(course_request.id)
       end
 
@@ -116,11 +117,11 @@ class UserTest < ActiveSupport::TestCase
         user1 = Factory.create(:user)
         user2 = Factory.create(:user)
         course_request = Factory(:course_request)
-        user1.join_course_request(course_request)
-        user2.join_course_request(course_request)
-        user1.disjoin_course_request(course_request)
-        user1.disjoin_course_request(course_request)
-        assert_not_nil CourseRequest.find(course_request.id)
+        user1.join_course_request(course_request.id)
+        user2.join_course_request(course_request.id)
+        user1.disjoin_course_request(course_request.id)
+        user1.disjoin_course_request(course_request.id)
+        assert CourseRequest.find(course_request.id)
       end
     end
 
@@ -133,8 +134,8 @@ class UserTest < ActiveSupport::TestCase
 
     should 'get all course_requests of a user' do
       user = Factory.create(:user)
-      user.join_course_request(Factory.create(:course_request))
-      user.join_course_request(Factory.create(:course_request))
+      user.join_course_request(Factory.create(:course_request).id)
+      user.join_course_request(Factory.create(:course_request).id)
       assert_equal user.get_course_requests.count, 2
     end
 

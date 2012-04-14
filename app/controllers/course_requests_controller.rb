@@ -15,7 +15,7 @@ class CourseRequestsController < ApplicationController
   end
 
   def create
-    if current_user.course_requests.create(params[:course_request])
+    if current_user.course_requests.create(:title => params[:course_request][:title], :description => params[:course_request][:title])
       flash[:info] = I18n.t('course_request.create.success')
       redirect_to course_requests_path
     else

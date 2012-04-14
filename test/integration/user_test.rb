@@ -66,7 +66,6 @@ class UserTest < ActionDispatch::IntegrationTest
 
     # assert page.has_link?(user2.first_name << " " << user2.last_name)
     # assert page.has_link?(user3.first_name << " " << user3.last_name)
-
     click_on I18n.t('pages.overview.accept_course_member')
     assert page.has_content?(I18n.t('course_member.update.success'))
     click_on I18n.t('pages.overview.reject_course_member')

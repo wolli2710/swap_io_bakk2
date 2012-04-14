@@ -67,20 +67,24 @@ class CourseTest < ActionDispatch::IntegrationTest
     click_on I18n.t('course_request.show.join_course_request_button')
 
     assert page.has_content?(I18n.t('course_request.join.success'))
-    #assert page.has_no_button?(I18n.t('course_request.show.join_course_request_button'))
+    assert page.has_no_button?(I18n.t('course_request.show.join_course_request_button'))
   end
 
   should 'not be able to join course_request twice' do
     user = Factory.create(:user)
+    user2 = Factory.create(:user)
     course_request = user.course_requests.create(:title => "bli", :description => "blup")
-    login_as(user)
+    user2.join_course_request(course_request.id)
+    user2.reload
+    login_as(user2)
     visit courses_path
     click_on I18n.t('app.course_request_link')
     click_on course_request.title
 
     assert page.has_content?(course_request.title)
     assert page.has_content?(course_request.description)
-    #assert page.has_no_button?(I18n.t('course_request.show.join_course_request_button'))
+    click_on I18n.t('course_request.show.join_course_request_button')
+    assert page.has_button?(I18n.t('course_request.show.disjoin_course_request_button'))
   end
 
   should 'be able to disjoin course_request' do
@@ -91,11 +95,9 @@ class CourseTest < ActionDispatch::IntegrationTest
     click_on I18n.t('app.course_request_link')
     click_on course_request.title
 
-# puts user.course_requests.include? user.id
-# puts user.course_requests.inspect
-
     assert page.has_content?(course_request.title)
     assert page.has_content?(course_request.description)
+
     assert page.has_button?(I18n.t('course_request.show.disjoin_course_request_button'))
     click_on I18n.t('course_request.show.disjoin_course_request_button')
     assert page.has_content?(I18n.t('course_request.disjoin.success'))
@@ -107,13 +109,12 @@ class CourseTest < ActionDispatch::IntegrationTest
     user = Factory.create(:user)
     user2 = Factory.create(:user)
     course_request = user.course_requests.create(:title => "bli", :description => "blup")
-    user2.join_course_request(course_request)
-    login_as
-
+    login_as user2
     visit courses_path
     click_on I18n.t('app.course_request_link')
     click_on course_request.title
-    assert_difference "ActionMailer::Base.deliveries.count", 2 do
+    course_request.reload
+    assert_difference "ActionMailer::Base.deliveries.count"  do
       click_on I18n.t('course_request.show.provide_course_request_button')
       select 'Cooking', :from => 'course_category_id'
       click_on I18n.t('course.new.submit')

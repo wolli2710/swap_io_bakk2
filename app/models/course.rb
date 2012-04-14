@@ -18,7 +18,7 @@ class Course
 
   def provide_course_mailer course_request
     course_request.user_ids.each do |u|
-      User.find(u)
+      user = User.find(u)
       user_link = "http://wissenteilen.com/#{I18n.t('routes.users.as')}/#{user.id}"
       course_request_link = "http://wissenteilen.com/#{I18n.t('routes.courses.as')}/#{self.id}"
       SystemMailer.provide_course(user, user_link, course_request_link).deliver
@@ -52,9 +52,8 @@ class Course
   end
 
   def update_user_acceptance id, acceptance
-    course_member = self.course_members.where(:user_ids => id).first
-    puts course_member
-    user = User.find(course_member.user_ids)
+    course_member = self.course_members.find(id)
+    user = User.find(self.user_id)
     course_member.accepted = acceptance
     course_member.save
     if acceptance == "1"
@@ -64,7 +63,5 @@ class Course
     end
     acceptance == "1" ? true : false
   end
-
-
 
 end

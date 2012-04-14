@@ -56,12 +56,10 @@ class CourseTest < ActiveSupport::TestCase
   end
 
   should 'send email to users which joined course_request' do
-    user1 = Factory.create(:user)
-    user2 = Factory.create(:user)
+    user = Factory.create(:user)
     course = Factory.create(:course)
-    course_request = user1.course_requests.create(:title => "bli", :description => "blup")
-    user2.join_course_request(course_request)
-    assert_difference "ActionMailer::Base.deliveries.count", 2 do
+    course_request = user.course_requests.create(:title => "bli", :description => "blup")
+    assert_difference "ActionMailer::Base.deliveries.count" do
       course.provide_course_mailer(course_request)
     end
   end

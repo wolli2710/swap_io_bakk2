@@ -53,7 +53,6 @@ class CourseTest < ActionDispatch::IntegrationTest
       select(category.title, :from => 'course_category_id')
       click_on(I18n.t('course.new.submit'))
     end
-    assert current_path.to_s == course_path(Course.last)
     assert page.has_content?(I18n.t('course.create.success'))
   end
 
@@ -67,13 +66,13 @@ class CourseTest < ActionDispatch::IntegrationTest
     user = Factory.create(:user)
     user2 = Factory.create(:user)
     course_request = Factory.create(:course_request)
-    user.join_course_request(course_request)
+    user.join_course_request(course_request.id)
     login_as user2
-save_and_open_page
     visit course_requests_path
     click_on course_request.title
-puts I18n.t('course_request.show.provide_course_request_button')
     click_on I18n.t('course_request.show.provide_course_request_button')
+    assert find('#course_title').value == "#{course_request.title}"
+    assert find('#course_description').value == "#{course_request.description}"
   end
 
   should 'be deletable from owner' do
