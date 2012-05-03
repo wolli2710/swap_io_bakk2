@@ -4,15 +4,15 @@ gem 'rails', '3.2.1'
 gem 'jquery-rails'
 gem 'mysql2'
 gem 'i18n_routing'
-gem 'mongoid-paperclip'
 gem 'client_side_validations', :git => 'https://github.com/bcardarella/client_side_validations.git'
 
 gem 'devise', '2.0.0'
 gem 'omniauth-facebook'
+gem 'flog'
 
 gem 'haml'
-gem 'mongoid', '~> 2.4'
-gem 'bson_ext', '~> 1.5'
+gem 'mongoid', '2.4.5'
+gem 'bson_ext', '1.5'
 
 gem "airbrake"
 

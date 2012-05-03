@@ -2,11 +2,3 @@
   .row
     .span10.offset1
       = image_tag 'logo.jpg'
-
-  #newsletter-box
-    =form_for @subscriber do |f|
-      #newsletter-center
-        = f.label :email, I18n.t('pages.welcome.newsletter_sign_up_label')
-        %span
-          = f.email_field :email, :placeholder=> I18n.t('pages.welcome.newsletter_sign_up_placeholder')
-          = submit_tag I18n.t('pages.welcome.newsletter_sign_up_button'), :class => "submit_btn"

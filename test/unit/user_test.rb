@@ -84,7 +84,7 @@ class UserTest < ActiveSupport::TestCase
     context "join_course_request" do
       should "join_course_request if not already joined" do
         user =  Factory.create(:user)
-        course_request = Factory(:course_request)
+        course_request = Factory.create(:course_request)
         assert false != user.join_course_request(course_request.id)
         assert_equal false, user.join_course_request(course_request.id)
       end

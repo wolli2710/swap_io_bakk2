@@ -14,11 +14,9 @@ class Course
   embeds_many :course_members
 
   validates_presence_of :title, :description, :category_id, :user_id
-  attr_accessible :user_id, :category_id, :title, :description
 
   def provide_course_mailer course_request
-    course_request.user_ids.each do |u|
-      user = User.find(u)
+    course_request.users.each do |user|
       user_link = "http://wissenteilen.com/#{I18n.t('routes.users.as')}/#{user.id}"
       course_request_link = "http://wissenteilen.com/#{I18n.t('routes.courses.as')}/#{self.id}"
       SystemMailer.provide_course(user, user_link, course_request_link).deliver
@@ -48,12 +46,12 @@ class Course
   end
 
   def check_attendance(user_id)
-    self.course_members.where(user_id: user_id).exists?
+    self.course_members.where(:user_id => user_id).exists?
   end
 
   def update_user_acceptance id, acceptance
     course_member = self.course_members.find(id)
-    user = User.find(self.user_id)
+    user = self.user
     course_member.accepted = acceptance
     course_member.save
     if acceptance == "1"

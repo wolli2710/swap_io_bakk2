@@ -8,40 +8,10 @@ class UserTest < ActionDispatch::IntegrationTest
     visit courses_path
     click_on I18n.t('app.course_link')
     click_on "#{course.user.first_name} #{course.user.last_name}"
-    assert page.has_selector?('img')
     assert page.has_content?(course.user.first_name)
     assert page.has_content?(course.user.last_name)
     assert page.has_content?(course.user.description)
   end
-
-  # #TODO!!!!!!!!!!!!!!!!!!!!!!!
-  # should 'be able to create skills' do
-  #   visit "/"
-  #   login_as
-  #   click_on I18n.t('user.edit.title')
-  #   click_on I18n.t('user.edit.tabs.about')
-  #   assert page.has_content?(I18n.t('helpers.label.user.job'))
-  #   assert page.has_content?(I18n.t('helpers.label.user.motivation'))
-  #   assert page.has_content?(I18n.t('helpers.label.user.skills'))
-  #   assert page.has_content?(I18n.t('helpers.label.user.description'))
-  #   assert page.has_content?(I18n.t('helpers.label.user.user_images.image'))
-  #   fill_in('user_user_skills_attributes_0_title', :with => 'Rails Programmierung')
-  #   click_on I18n.t('user.edit.submit')
-  #   assert page.has_content? I18n.t('user.edit.msg.success')
-  # end
-
-  # #TODO!!!!!!!!!!!!!!!!!
-  # should 'not be able to create skills' do
-  #   visit "/"
-  #   user = Factory.create(:user)
-  #   login_as user
-  #   click_on I18n.t('user.edit.title')
-  #   click_on I18n.t('user.edit.tabs.about')
-  #   fill_in('user_user_skills_attributes_0_title', :with => 'Rails Programmierung')
-  #   User.any_instance.stubs(:update_attributes).returns(false)
-  #   click_on I18n.t('user.edit.submit')
-  #   assert page.has_content? I18n.t('user.edit.msg.fail')
-  # end
 
   should 'be able to accept user for course' do
     user1 = Factory.create(:user)

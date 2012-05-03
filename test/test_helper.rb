@@ -1,5 +1,5 @@
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start 'rails'
 
 ENV["RAILS_ENV"] = "test"
 require File.expand_path('../../config/environment', __FILE__)
@@ -23,12 +23,12 @@ class ActiveSupport::TestCase
 end
 
 Mongoid.configure do |config|
-  name = "embed_hash_test"
-  host = "localhost"
-  config.master = Mongo::Connection.new.db(name)
-  config.persist_in_safe_mode = false
-
-  config.purge!
+ # name = "swap_test"
+ # host = "localhost"
+ # config.master = Mongo::Connection.new.db(name)
+ # config.persist_in_safe_mode = false
+ # config.purge!
+ Mongoid::Config.purge!
 end
 
 class ActionController::TestCase

@@ -2,7 +2,7 @@ class Category
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  #has_many :courses
+  has_many :courses
 
   field :title, :type => String
 

@@ -8,7 +8,6 @@ class CourseTest < ActionDispatch::IntegrationTest
 
     visit "/courses"
 
-    assert page.has_selector?('img')
     assert page.has_content?(I18n.t('course.index.created_from'))
     assert page.has_content?(I18n.t('course.index.headline'))
     assert page.has_content?(course1.title)
@@ -25,7 +24,6 @@ class CourseTest < ActionDispatch::IntegrationTest
     visit "/"
     click_on I18n.t('app.course_link')
     click_on course.title.to_s
-    assert page.has_selector?('img')
     assert page.has_content?(course.title)
     assert page.has_content?(course.description)
     assert page.has_content?(I18n.t('course.show.created_from'))

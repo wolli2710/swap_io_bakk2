@@ -8,8 +8,6 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
-    @user.user_images.build
-    @user.user_skills.build
   end
 
   def update

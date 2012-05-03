@@ -2,7 +2,7 @@ class CourseMembersController < ApplicationController
 
   def create
     course = Course.find(params[:course_id])
-    if course.course_members.create(:course_id => course.id, :user_id => current_user.id)
+    if course.course_members.create(:user_id => current_user.id)
       Course.course_member_request current_user, course.id
       flash[:message] = I18n.t('course_member.create.success')
       redirect_to courses_path

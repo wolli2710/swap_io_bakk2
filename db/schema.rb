@@ -11,7 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120308235424) do
+ActiveRecord::Schema.define(:version => 20120303132321) do
+
+  create_table "admin_users", :force => true do |t|
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+  end
 
   create_table "categories", :force => true do |t|
     t.string   "title"
@@ -20,11 +35,11 @@ ActiveRecord::Schema.define(:version => 20120308235424) do
   end
 
   create_table "course_members", :force => true do |t|
-    t.integer  "user_id",                   :null => false
-    t.integer  "course_id",                 :null => false
-    t.integer  "accepted",   :default => 2
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.integer  "user_id",                       :null => false
+    t.integer  "course_id",                     :null => false
+    t.boolean  "accepted",   :default => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   create_table "course_requests", :force => true do |t|
@@ -50,19 +65,19 @@ ActiveRecord::Schema.define(:version => 20120308235424) do
     t.integer  "category_id", :null => false
   end
 
-  create_table "newsletter_subscribers", :force => true do |t|
-    t.string   "email"
-    t.string   "signout_hash"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
-
   create_table "newsletters", :force => true do |t|
     t.string   "title"
     t.text     "body"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
-    t.boolean  "sent",       :default => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "subscribers", :force => true do |t|
+    t.string   "email"
+    t.string   "signout_hash"
+    t.string   "newsletter_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "user_images", :force => true do |t|

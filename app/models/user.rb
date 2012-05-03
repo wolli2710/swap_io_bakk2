@@ -40,22 +40,13 @@ class User
    field :unconfirmed_email,    :type => String # Only if using reconfirmable
 
   has_many :courses, :dependent => :destroy
-  has_many :course_requests, :dependent => :destroy
- # has_many :course_members #, :through => :courses
-
-  has_and_belongs_to_many :course_requests #, :uniq => true
-
-  embeds_many :user_skills
-  #accepts_nested_attributes_for :user_skills
-
-  embeds_many :user_images
-
+  has_and_belongs_to_many :course_requests
 
   # Setup accessible (or protected) attributes for your model
 
   attr_accessible :email, :password, :password_confirmation, :remember_me,
-                  :first_name, :last_name, :zip, :confirmed_at, :user_images_attributes,
-                  :description, :user_skills_attributes, :job, :motivation, :unconfirmed_email
+                  :first_name, :last_name, :zip, :confirmed_at,
+                  :description, :job, :motivation, :unconfirmed_email
 
   validates_presence_of :first_name
   validates_presence_of :last_name
@@ -78,32 +69,17 @@ class User
   end
 
   def has_course_request?(course_request_id)
-    return true if self.course_request_ids.include? course_request_id
-    false
+    (self.course_request_ids.include? course_request_id) ? true : false
   end
 
   def join_course_request(course_request_id)
-    if self.has_course_request?(course_request_id)
-      false
-    else
-      self.course_request_ids << course_request_id
-      self.save
       cr = CourseRequest.find(course_request_id)
-      cr.user_ids << self.id
-      cr.save
-      true
-    end
+      (self.has_course_request?(course_request_id)) ? false : self.course_requests.push(cr)
   end
 
   def disjoin_course_request(course_request_id)
     cr = CourseRequest.find(course_request_id)
-    if cr.user_ids.size > 0
-      cr.user_ids.delete(self.id)
-      cr.save
-      true
-    else
-      false
-    end
+    cr.users.delete_all(:conditions => {"_id" => BSON::ObjectId(self.id.to_s)} )
   end
 
   def get_courses
@@ -116,7 +92,7 @@ class User
 
   def get_accepted_course_memberships
     course_members = []
-    self.courses.where(user_id: self.id).each do |f|
+    self.courses.each do |f|
       f.course_members.each do |cm|
         course_members << cm if cm.accepted == 1
       end

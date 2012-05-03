@@ -2,8 +2,9 @@
 %h2= I18n.t('pages.overview.course_member_list')
 
 - if current_user
-  - current_user.get_courses.each do |course|
+  - current_user.courses.each do |course|
     %h2= course.title
+    %h3= course.description
     
     = button_to I18n.t('pages.overview.delete_link'), course_path(course), :method => :delete
     = render :partial => 'member', :collection => course.get_course_members
