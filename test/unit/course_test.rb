@@ -62,7 +62,7 @@ class CourseTest < ActiveSupport::TestCase
     course_request = user1.course_requests.create(:title => "bli", :description => "blup")
     user2.join_course_request(course_request)
     assert_difference "ActionMailer::Base.deliveries.count", 2 do
-      course.provide_course_mailer(course_request.id)
+      course.provide_course_mailer(course_request)
     end
   end
 

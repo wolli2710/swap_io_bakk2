@@ -14,7 +14,6 @@ class PagesController < ApplicationController
   end
 
   def welcome
-    @subscriber = NewsletterSubscriber.new
     render :layout => 'welcome'
   end
 end

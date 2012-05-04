@@ -3,7 +3,6 @@
 .container
   .row
     .span3
-      .thumbnail= image_tag userpic(@course.user, :medium), :alt => username(@course.user)
     .span9
       %h2= I18n.t('course.show.description')
       %p= @course.description

@@ -14,12 +14,16 @@ class CourseMember < ActiveRecord::Base
 
   def self.update_user_acceptance id, acceptance
     course_member = self.find(id)
-    course_member.update_attribute(:accepted, acceptance)
+    course = course_member.course
+    user = course_member.user
+    course_member.accepted = acceptance
+    course_member.save
     if acceptance == "1"
-      SystemMailer.accept_course_member(course_member.user, course_member.course).deliver
+      SystemMailer.accept_course_member(user, course).deliver
     elsif acceptance == "0"
-      SystemMailer.reject_course_member(course_member.user, course_member.course).deliver
+      SystemMailer.reject_course_member(user, course).deliver
     end
     acceptance == "1" ? true : false
   end
+
 end

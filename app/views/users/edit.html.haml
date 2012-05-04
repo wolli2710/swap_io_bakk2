@@ -24,18 +24,6 @@
             = f.text_field :zip
 
         .tab-pane#about
-          = f.fields_for :user_images do |image|
-            - unless image.object.new_record?
-              .span9
-                .thumbnail
-                  %div.pull-right
-                    = image.label :_destroy
-                    = image.check_box :_destroy
-                  = image_tag userpic(@user, :medium), :alt => username(@user)
-            - else
-              %div
-                = image.label :image
-                = image.file_field :image
 
           %div
             = f.label :description

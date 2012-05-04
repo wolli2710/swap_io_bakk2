@@ -8,8 +8,7 @@ class Course < ActiveRecord::Base
 
   validates_presence_of :title, :description, :category_id, :user_id
 
-  def provide_course_mailer course_request_id
-    course_request = CourseRequest.find_by_id(course_request_id)
+  def provide_course_mailer course_request
     course_request.users.each do |user|
       user_link = "http://wissenteilen.com/#{I18n.t('routes.users.as')}/#{user.id}"
       course_request_link = "http://wissenteilen.com/#{I18n.t('routes.courses.as')}/#{self.id}"

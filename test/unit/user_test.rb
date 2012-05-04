@@ -96,7 +96,7 @@ class UserTest < ActiveSupport::TestCase
       user.join_course_request(course_request)
       assert_not_nil course_request
       user.disjoin_course_request(course_request)
-      assert CourseRequest.find_by_id(course_request.id).nil?
+      assert CourseRequest.find(course_request)
     end
 
     should 'not delete course request for last user' do

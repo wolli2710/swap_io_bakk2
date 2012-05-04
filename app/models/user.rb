@@ -19,14 +19,6 @@ class User < ActiveRecord::Base
   has_many :courses, :dependent => :destroy
   has_many :course_members, :through => :courses
 
-  has_and_belongs_to_many :course_requests, :uniq => true
-
-  has_many :user_skills, :dependent => :delete_all
-  accepts_nested_attributes_for :user_skills, :reject_if => proc {|attributes| attributes[:title].blank?}, :allow_destroy => true
-
-  has_many :user_images, :dependent => :delete_all
-  accepts_nested_attributes_for :user_images, :allow_destroy => true
-
   has_and_belongs_to_many :course_requests
 
   def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
@@ -50,11 +42,7 @@ class User < ActiveRecord::Base
   end
 
   def disjoin_course_request(course_request)
-    if CourseRequest.find_by_id(course_request.id).users.count > 1
       self.course_requests.delete(course_request)
-    else
-      CourseRequest.find_by_id(course_request.id).destroy if self.has_course_request?(course_request)
-    end
   end
 
   def get_courses

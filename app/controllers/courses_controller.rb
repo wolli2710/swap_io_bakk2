@@ -14,7 +14,7 @@ class CoursesController < ApplicationController
     @course = current_user.courses.new( params[:course] )
     if @course.save
       flash[:message] = I18n.t('course.create.success')
-      @course.provide_course_mailer params[:type] if params[:type]
+      @course.provide_course_mailer CourseRequest.find(params[:type]) if params[:type]
       redirect_to course_path(@course)
     else
       flash[:error] = I18n.t('course.create.fail')
